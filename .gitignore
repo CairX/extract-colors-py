@@ -1,2 +1,5 @@
 # IDE Config
 .idea/
+
+# Python Virtual Environment
+venv/
