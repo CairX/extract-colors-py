@@ -3,3 +3,6 @@
 
 # Python Virtual Environment
 venv/
+
+# Extractor results
+results/
