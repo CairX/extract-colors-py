@@ -109,7 +109,7 @@ def image_result(counter, size, path):
 		canvas.rectangle([(idx * size, 0), ((idx * size) + (size - 1), (size - 1))], fill=item[0])
 
 	file_name = os.path.splitext(os.path.basename(path))[0]
-	file_name = "{0} {1}.png".format(file_name, time.strftime("%Y-%m-%d %H%M%S", time.gmtime()))
+	file_name = "{0} {1}.png".format(file_name, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
 	result = result.convert("RGBA")
 	result.save(os.path.join("results", file_name), "PNG")
 
