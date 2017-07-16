@@ -208,12 +208,19 @@ def print_result(counter, total):
 
 
 def image_result(counter, size, path):
-	result = Image.new("RGBA", (len(counter) * size, size), (0, 0, 0, 0))
+	columns = 5
+	width = min(len(counter), columns) * size
+	height = (math.floor(len(counter) / columns) + 1) * size
+
+	result = Image.new("RGBA", (width, height), (0, 0, 0, 0))
 	canvas = ImageDraw.Draw(result)
 	for idx, item in enumerate(counter):
-		# TODO Don't do this here, it should be rounded in the printed result as well.
 		color = round(item[0][0]), round(item[0][1]), round(item[0][2])
-		canvas.rectangle([(idx * size, 0), ((idx * size) + (size - 1), (size - 1))], fill=color)
+		x = (idx % columns) * size
+		y = math.floor(idx / columns) * size
+		w = size - 1
+		h = size - 1
+		canvas.rectangle([(x, y), (x + w, y + h)], fill=color)
 
 	file_name = os.path.splitext(os.path.basename(path))[0]
 	file_name = "{0} {1}.png".format(file_name, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
