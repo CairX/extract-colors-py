@@ -18,7 +18,8 @@ def load(path):
 	timer = Timer()
 	img = Image.open(path)
 	print(img.mode)
-	img = img.convert("HSV")
+	# TODO Handle alpha.
+	img = img.convert("RGB")
 	print(img.mode)
 	pixels = list(img.getdata())
 	width, height = img.size
@@ -27,10 +28,97 @@ def load(path):
 	print("Width: {}".format(width))
 	print("Height: {}".format(height))
 	print("Pixels: {}".format(len(pixels)))
-	print("Profile: {}".format(img.info.get("icc_profile", "")))
+	print("Color profile: {}".format(img.info.get("icc_profile", "")))
 	print("Time: {} seconds".format(timer.elapsed()))
 
 	return pixels
+
+
+def srgb_xyz(rgb):
+	r = pivot_srgb_xyz(rgb[0] / 255)
+	g = pivot_srgb_xyz(rgb[1] / 255)
+	b = pivot_srgb_xyz(rgb[2] / 255)
+
+	# x, y and z output refer to a D65/2° standard illuminant
+	# Illuminant = D65, Observer = 2°
+	x = r * 0.4124 + g * 0.3576 + b * 0.1805
+	y = r * 0.2126 + g * 0.7152 + b * 0.0722
+	z = r * 0.0193 + g * 0.1192 + b * 0.9505
+
+	return x, y, z
+
+
+def pivot_srgb_xyz(value):
+	if value > 0.04045:
+		value = math.pow((value + 0.055) / 1.055, 2.4)
+	else:
+		value /= 12.92
+	return value * 100
+
+
+def xyz_srgb(xyz):
+	x = xyz[0] / 100
+	y = xyz[1] / 100
+	z = xyz[2] / 100
+
+	r = x * 3.2406 + y * -1.5372 + z * -0.4986
+	g = x * -0.9689 + y * 1.8758 + z * 0.0415
+	b = x * 0.0557 + y * -0.2040 + z * 1.0570
+
+	r = pivot_xyz_srgb(r) * 255
+	g = pivot_xyz_srgb(g) * 255
+	b = pivot_xyz_srgb(b) * 255
+
+	return r, g, b
+
+def pivot_xyz_srgb(value):
+	if value > 0.0031308:
+		value = 1.055 * math.pow(value, (1 / 2.4)) - 0.055
+	else:
+		value = 12.92 * value
+	return value
+
+
+def xyz_lab(xyz):
+	# Illuminant = D65
+	x = pivot_xyz_lab(xyz[0] / 95.047)
+	y = pivot_xyz_lab(xyz[1] / 100.000)
+	z = pivot_xyz_lab(xyz[2] / 108.883)
+
+	l = max(0.0, (116 * y) - 16)
+	a = 500 * (x - y)
+	b = 200 * (y - z)
+
+	return l, a, b
+
+
+def pivot_xyz_lab(value):
+	if value > 0.008856:
+		value = math.pow(value, 1 / 3)
+	else:
+		value = (value * 7.787) + (16 / 116)
+	return value
+
+
+def lab_xyz(lab):
+	y = (lab[0] + 16) / 116
+	x = lab[1] / 500 + y
+	z = y - lab[2] / 200
+
+	# Illuminant = D65
+	x = pivot_lab_xyz(x) * 95.047
+	y = pivot_lab_xyz(y) * 100.000
+	z = pivot_lab_xyz(z) * 108.883
+
+	return x, y, z
+
+
+def pivot_lab_xyz(value):
+	if value > 0.008856:
+		value = math.pow(value, 3)
+	else:
+		value = (value - 16 / 116) / 7.787
+	return value
 
 
 def count_colors(pixels):
@@ -47,18 +135,19 @@ def count_colors(pixels):
 	return counter
 
 
-def compress(counter):
+def compress2(counter):
 	timer = Timer()
 	result = list(counter)
 
 	# TODO Sort before each loop?
 	# TODO Prevent more than 1% chained combination steps, probably.
 	# TODO Speed up.
+	# TODO Handle cases when items are equal in size. The result should be consistent.
 	diff_times = list()
 	cmp_times = list()
 	for smaller in reversed(result):
 		cmp_timer = Timer()
-		diff = 1
+		diff = 100
 		diff_item = None
 		t = result[:result.index(smaller)]
 
@@ -67,13 +156,14 @@ def compress(counter):
 
 		for larger in reversed(t):
 			diff_timer = Timer()
-			ndiff = diff_colors(smaller[0], larger[0])
+			ndiff = cie76(smaller[0], larger[0])
 			diff_times.append(diff_timer.elapsed())
 			if ndiff <= diff:
 				diff = ndiff
 				diff_item = larger
 
-		if diff < 0.1:
+		# http://zschuessler.github.io/DeltaE/learn/
+		if diff < 9.2:
 			diff_item[1] = diff_item[1] + smaller[1]
 			result.remove(smaller)
 		cmp_times.append(cmp_timer.elapsed())
@@ -87,6 +177,20 @@ def compress(counter):
 	print("Time: {} seconds".format(timer.elapsed()))
 
 	return result
+
+
+def cie76(c1, c2):
+	"""
+	LAB Delta E - version CIE76
+	https://en.wikipedia.org/wiki/Color_difference
+
+	E* ≈ 2.3 corresponds to a JND (just noticeable difference)
+	"""
+	return math.sqrt(
+		math.pow(c2[0] - c1[0], 2) +
+		math.pow(c2[1] - c1[1], 2) +
+		math.pow(c2[2] - c1[2], 2)
+	)
 
 
 def diff_colors(c1, c2):
@@ -104,14 +208,15 @@ def print_result(counter, total):
 
 
 def image_result(counter, size, path):
-	result = Image.new("HSV", (len(counter) * size, size), (0, 0, 0, 0))
+	result = Image.new("RGBA", (len(counter) * size, size), (0, 0, 0, 0))
 	canvas = ImageDraw.Draw(result)
 	for idx, item in enumerate(counter):
-		canvas.rectangle([(idx * size, 0), ((idx * size) + (size - 1), (size - 1))], fill=item[0])
+		# TODO Don't do this here, it should be rounded in the printed result as well.
+		color = round(item[0][0]), round(item[0][1]), round(item[0][2])
+		canvas.rectangle([(idx * size, 0), ((idx * size) + (size - 1), (size - 1))], fill=color)
 
 	file_name = os.path.splitext(os.path.basename(path))[0]
 	file_name = "{0} {1}.png".format(file_name, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
-	result = result.convert("RGBA")
 	result.save(os.path.join("results", file_name), "PNG")
 
 
@@ -127,13 +232,16 @@ def main():
 
 	path = args.image[0]
 	pixels = load(path)
+
 	counter = count_colors(pixels)
-	counter = compress(counter)
+	counter = [[xyz_lab(srgb_xyz(c[0])), c[1]] for c in counter]
+	counter = compress2(counter)
 
 	# wanted = min(10, len(counter))
 	# counter = counter[:wanted]
 
 	counter = sorted(counter, key=lambda x: x[1], reverse=True)
+	counter = [(xyz_srgb(lab_xyz(c[0])), c[1]) for c in counter]
 	print_result(counter, len(pixels))
 	image_result(counter, 150, path)
 	print("\nTotal time: {} seconds".format(timer.elapsed()))
