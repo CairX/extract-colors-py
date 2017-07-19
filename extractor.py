@@ -41,7 +41,7 @@ def count_colors(pixels):
 	for color in pixels:
 		counter[color] += 1
 
-	print("\n[COUNTER]")
+	print("\n[COUNT]")
 	print("Colors: {}".format(len(counter)))
 	print("Time: {} seconds".format(timer.elapsed()))
 
