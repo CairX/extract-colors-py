@@ -127,6 +127,12 @@ def main():
 		"image",
 		nargs=1,
 		metavar="PATH")
+	parser.add_argument(
+		"--limit", "-l",
+		nargs=1,
+		metavar="N",
+		help="upper limit to the number of extracted colors presented in the output",
+	)
 	args = parser.parse_args()
 
 	path = args.image[0]
@@ -138,11 +144,12 @@ def main():
 		tmp[colorutil.rgb_lab(color)] = count
 
 	counter = compress(tmp)
-
-	# wanted = min(10, len(counter))
-	# counter = counter[:wanted]
-
 	counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
+
+	if args.limit:
+		counter = counter[:min(int(args.limit[0]), len(counter))]
+
+	# TODO Restore to int instead of float.
 	counter = [(colorutil.lab_rgb(c[0]), c[1]) for c in counter]
 	print_result(counter, len(pixels))
 	image_result(counter, 150, path)
