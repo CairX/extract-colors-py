@@ -112,4 +112,4 @@ def rgb_lab(rgb):
 
 
 def lab_rgb(lab):
-	return rgb_xyz(lab_xyz(lab))
+	return xyz_rgb(lab_xyz(lab))
