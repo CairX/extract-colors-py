@@ -1,6 +1,9 @@
 # IDE Config
 .idea/
 
+# Python Cache
+__pycache__/
+
 # Python Virtual Environment
 venv/
 
