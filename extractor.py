@@ -171,7 +171,6 @@ def main():
 	for color, count in counter.items():
 		tmp[colorutil.rgb_lab(color)] = count
 
-	print(args.tolerance)
 	counter = compress(tmp, args.tolerance)
 	counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
 
