@@ -93,14 +93,6 @@ def compress(counter):
 	return result
 
 
-def diff_colors(c1, c2):
-	# TODO Fail faster.
-	hue = abs((c2[0] - c1[0]) / 255)
-	saturation = abs((c2[1] - c1[1]) / 255)
-	value = abs((c2[2] - c1[2]) / 255)
-	return (hue + saturation + value) / 3
-
-
 def print_result(counter, total):
 	print("\n[RESULT]")
 	for key, value in counter:
