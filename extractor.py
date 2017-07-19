@@ -180,8 +180,10 @@ def main():
 	# TODO Restore to int instead of float.
 	counter = [(colorutil.lab_rgb(c[0]), c[1]) for c in counter]
 	print_result(counter, len(pixels))
-	image_result(counter, 150, path)
-	print("\nTotal time: {} seconds".format(timer.elapsed()))
+	image_result(counter, 150, filename)
+
+	print("\nPixels in output: {} of {}".format(sum([c[1] for c in counter]), len(pixels)))
+	print("Total time: {} seconds".format(timer.elapsed()))
 
 
 if __name__ == "__main__":
