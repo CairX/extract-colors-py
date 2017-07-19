@@ -126,7 +126,6 @@ def count_colors(pixels):
 	counter = defaultdict(int)
 	for color in pixels:
 		counter[color] += 1
-	counter = [list(item) for item in sorted(counter.items(), key=lambda x: x[1], reverse=True)]
 
 	print("\n[COUNTER]")
 	print("Colors: {}".format(len(counter)))
@@ -135,9 +134,11 @@ def count_colors(pixels):
 	return counter
 
 
-def compress2(counter):
+def compress(counter):
 	timer = Timer()
-	result = list(counter)
+	result = counter
+
+	colors = [item[0] for item in sorted(counter.items(), key=lambda x: x[1], reverse=True)]
 
 	# TODO Sort before each loop?
 	# TODO Prevent more than 1% chained combination steps, probably.
@@ -145,28 +146,27 @@ def compress2(counter):
 	# TODO Handle cases when items are equal in size. The result should be consistent.
 	diff_times = list()
 	cmp_times = list()
-	for smaller in reversed(result):
+	i = 0
+	while i < len(colors):
 		cmp_timer = Timer()
-		diff = 100
-		diff_item = None
-		t = result[:result.index(smaller)]
+		larger = colors[i]
 
-		if len(result) == 1:
-			break
-
-		for larger in reversed(t):
+		j = i + 1
+		while j < len(colors):
+			smaller1 = colors[j]
 			diff_timer = Timer()
-			ndiff = cie76(smaller[0], larger[0])
+			ndiff = cie76(smaller1, larger)
 			diff_times.append(diff_timer.elapsed())
-			if ndiff <= diff:
-				diff = ndiff
-				diff_item = larger
 
-		# http://zschuessler.github.io/DeltaE/learn/
-		if diff < 9.2:
-			diff_item[1] = diff_item[1] + smaller[1]
-			result.remove(smaller)
+			# http://zschuessler.github.io/DeltaE/learn/
+			if ndiff < 12.2:
+				result[larger] += result[smaller1]
+				result.pop(smaller1)
+				colors.remove(smaller1)
+			else:
+				j += 1
 		cmp_times.append(cmp_timer.elapsed())
+		i += 1
 
 	print("\n[COMPRESS]")
 	print("Colors: {}".format(len(result)))
@@ -241,13 +241,16 @@ def main():
 	pixels = load(path)
 
 	counter = count_colors(pixels)
-	counter = [[xyz_lab(srgb_xyz(c[0])), c[1]] for c in counter]
-	counter = compress2(counter)
+	tmp = dict()
+	for color, count in counter.items():
+		tmp[xyz_lab(srgb_xyz(color))] = count
+
+	counter = compress(tmp)
 
 	# wanted = min(10, len(counter))
 	# counter = counter[:wanted]
 
-	counter = sorted(counter, key=lambda x: x[1], reverse=True)
+	counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
 	counter = [(xyz_srgb(lab_xyz(c[0])), c[1]) for c in counter]
 	print_result(counter, len(pixels))
 	image_result(counter, 150, path)
