@@ -48,10 +48,12 @@ def count_colors(pixels):
 	return counter
 
 
-def compress(counter):
-	timer = Timer()
+def compress(counter, tolerance):
 	result = counter
+	if tolerance <= 0:
+		return result
 
+	timer = Timer()
 	colors = [item[0] for item in sorted(counter.items(), key=lambda x: x[1], reverse=True)]
 
 	# TODO Sort before each loop?
@@ -73,7 +75,7 @@ def compress(counter):
 			diff_times.append(diff_timer.elapsed())
 
 			# http://zschuessler.github.io/DeltaE/learn/
-			if ndiff < 12.2:
+			if ndiff < tolerance:
 				result[larger] += result[smaller1]
 				result.pop(smaller1)
 				colors.remove(smaller1)
@@ -119,6 +121,20 @@ def image_result(counter, size, path):
 	result.save(os.path.join("results", file_name), "PNG")
 
 
+def parse_tolerance(value):
+	value = float(value)
+	if value < 0 or value > 100:
+		raise argparse.ArgumentTypeError("{} isn't a integer between 0 and 100".format(value))
+	return value
+
+
+def parse_limit(value):
+	value = int(value)
+	if value < 0:
+		raise argparse.ArgumentTypeError("{} isn't a positive integer".format(value))
+	return value
+
+
 def main():
 	timer = Timer()
 	parser = argparse.ArgumentParser(
@@ -128,8 +144,20 @@ def main():
 		nargs=1,
 		metavar="PATH")
 	parser.add_argument(
-		"--limit", "-l",
-		nargs=1,
+		"-t", "--tolerance",
+		nargs="?",
+		type=parse_tolerance,
+		default=32,
+		const=32,
+		metavar="N",
+		help="group colors to limit the output and give a better visual representation. "
+			"Based on a scale from 0 to 100. Where 0 won't group any color and 100 will group all colors into one. "
+			"Defaults to 32"
+	)
+	parser.add_argument(
+		"-l", "--limit",
+		nargs="?",
+		type=parse_limit,
 		metavar="N",
 		help="upper limit to the number of extracted colors presented in the output",
 	)
@@ -143,11 +171,12 @@ def main():
 	for color, count in counter.items():
 		tmp[colorutil.rgb_lab(color)] = count
 
-	counter = compress(tmp)
+	print(args.tolerance)
+	counter = compress(tmp, args.tolerance)
 	counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
 
 	if args.limit:
-		counter = counter[:min(int(args.limit[0]), len(counter))]
+		counter = counter[:min(int(args.limit), len(counter))]
 
 	# TODO Restore to int instead of float.
 	counter = [(colorutil.lab_rgb(c[0]), c[1]) for c in counter]
