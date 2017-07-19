@@ -101,7 +101,7 @@ def print_result(counter, total):
 		print("{0:15}:{1:>7}% ({2})".format(str(key), "{0:.2f}".format(value / total * 100), value))
 
 
-def image_result(counter, size, path):
+def image_result(counter, size, filename):
 	columns = 5
 	width = min(len(counter), columns) * size
 	height = (math.floor(len(counter) / columns) + 1) * size
@@ -116,9 +116,8 @@ def image_result(counter, size, path):
 		h = size - 1
 		canvas.rectangle([(x, y), (x + w, y + h)], fill=c)
 
-	file_name = os.path.splitext(os.path.basename(path))[0]
-	file_name = "{0} {1}.png".format(file_name, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
-	result.save(os.path.join("results", file_name), "PNG")
+	filename = "{0} {1}.png".format(filename, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
+	result.save(os.path.join("results", filename), "PNG")
 
 
 def parse_tolerance(value):
@@ -164,6 +163,7 @@ def main():
 	args = parser.parse_args()
 
 	path = args.image[0]
+	filename = os.path.splitext(os.path.basename(path))[0]
 	pixels = load(path)
 
 	counter = count_colors(pixels)
