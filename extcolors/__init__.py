@@ -1,5 +1,5 @@
 import argparse
-import colorutil
+import extcolors.colorutil
 import math
 import os
 import time
