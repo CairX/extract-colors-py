@@ -5,7 +5,7 @@ setup(
 	version="0.1.0",
 	description="Extract colors from a specified image. "
 				"Groups colors based on visual similarities using the CIE76 formula.",
-	url="", # INSERT GITHUB HERE
+	url="https://github.com/CairX/extract-colors-py",
 	author="CairX",
 	author_email="lazycairx@gmail.com",
 	license="MIT",
