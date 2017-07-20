@@ -126,11 +126,18 @@ def parse_limit(value):
 def main():
 	timer = Timer()
 	parser = argparse.ArgumentParser(
-		description="Extract the most common colors from an image.")
+		description="Extract the most common colors from an image."
+	)
+	parser.add_argument(
+		"--version",
+		action="version",
+		version="%(prog)s 0.1.0"
+	)
 	parser.add_argument(
 		"image",
 		nargs=1,
-		metavar="PATH")
+		metavar="PATH"
+	)
 	parser.add_argument(
 		"-t", "--tolerance",
 		nargs="?",
@@ -147,7 +154,7 @@ def main():
 		nargs="?",
 		type=parse_limit,
 		metavar="N",
-		help="upper limit to the number of extracted colors presented in the output",
+		help="upper limit to the number of extracted colors presented in the output"
 	)
 	args = parser.parse_args()
 
