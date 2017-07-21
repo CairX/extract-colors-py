@@ -29,7 +29,7 @@ def load(path):
 	print("Width: {}".format(width))
 	print("Height: {}".format(height))
 	print("Pixels: {}".format(len(pixels)))
-	print("Color profile: {}".format(img.info.get("icc_profile", "")))
+	print("Color profile: {}".format(img.info.get("icc_profile", "None specified")))
 	print("Time: {} seconds".format(timer.elapsed()))
 
 	return pixels
