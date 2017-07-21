@@ -106,7 +106,7 @@ def image_result(counter, size, filename):
 		canvas.rectangle([(x, y), (x + size - 1, y + size - 1)], fill=item[0])
 
 	filename = "{0} {1}.png".format(filename, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
-	result.save(os.path.join("results", filename), "PNG")
+	result.save(filename, "PNG")
 
 
 def parse_tolerance(value):
