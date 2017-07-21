@@ -126,7 +126,8 @@ def parse_limit(value):
 def main():
 	timer = Timer()
 	parser = argparse.ArgumentParser(
-		description="Extract the most common colors from an image."
+		description="Extract colors from a specified image. "
+					"Colors are grouped based on visual similarities using the CIE76 formula."
 	)
 	parser.add_argument(
 		"--version",
