@@ -25,7 +25,7 @@ setup(
 	],
 	keywords="extract colors image",
 	packages=["extcolors"],
-	install_require=["Pillow"],
+	install_requires=["Pillow"],
 	entry_points={
 		"console_scripts": [
 			"extcolors=extcolors:main"
