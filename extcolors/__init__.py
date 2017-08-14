@@ -15,6 +15,29 @@ class Timer(object):
 		return time.time() - self.start
 
 
+def extract(path, tolerance, limit=None):
+	timer = Timer()
+	pixels = load(path)
+
+	counter = count_colors(pixels)
+	tmp = dict()
+	for color, count in counter.items():
+		tmp[colorutil.rgb_lab(color)] = count
+
+	counter = compress(tmp, tolerance)
+	counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
+
+	if limit:
+		counter = counter[:min(int(limit), len(counter))]
+
+	counter = [(colorutil.lab_rgb(c[0]), c[1]) for c in counter]
+
+	print("\nPixels in output: {} of {}".format(sum([c[1] for c in counter]), len(pixels)))
+	print("Total time: {} seconds".format(timer.elapsed()))
+
+	return counter, len(pixels)
+
+
 def load(path):
 	timer = Timer()
 	img = Image.open(path)
@@ -119,7 +142,6 @@ def parse_limit(value):
 
 
 def main():
-	timer = Timer()
 	parser = argparse.ArgumentParser(
 		description="Extract colors from a specified image. "
 					"Colors are grouped based on visual similarities using the CIE76 formula."
@@ -156,25 +178,10 @@ def main():
 
 	path = args.image[0]
 	filename = os.path.splitext(os.path.basename(path))[0]
-	pixels = load(path)
+	counter, total = extract(path, args.tolerance, args.limit)
 
-	counter = count_colors(pixels)
-	tmp = dict()
-	for color, count in counter.items():
-		tmp[colorutil.rgb_lab(color)] = count
-
-	counter = compress(tmp, args.tolerance)
-	counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
-
-	if args.limit:
-		counter = counter[:min(int(args.limit), len(counter))]
-
-	counter = [(colorutil.lab_rgb(c[0]), c[1]) for c in counter]
-	print_result(counter, len(pixels))
+	print_result(counter, total)
 	image_result(counter, 150, filename)
-
-	print("\nPixels in output: {} of {}".format(sum([c[1] for c in counter]), len(pixels)))
-	print("Total time: {} seconds".format(timer.elapsed()))
 
 
 if __name__ == "__main__":
