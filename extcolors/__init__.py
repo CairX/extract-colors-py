@@ -19,7 +19,6 @@ def load(path):
 	timer = Timer()
 	img = Image.open(path)
 	print(img.mode)
-	# TODO Handle alpha.
 	img = img.convert("RGB")
 	print(img.mode)
 	pixels = list(img.getdata())
@@ -56,8 +55,6 @@ def compress(counter, tolerance):
 	timer = Timer()
 	colors = [item[0] for item in sorted(counter.items(), key=lambda x: x[1], reverse=True)]
 
-	# TODO Speed up.
-	# TODO Handle cases when items are equal in size. The result should be consistent.
 	cmp_times = list()
 	i = 0
 	while i < len(colors):
@@ -92,8 +89,6 @@ def print_result(counter, total):
 
 
 def image_result(counter, size, filename):
-	# TODO Add color values to result image.
-	# TODO Add color percentage to result image.
 	columns = 5
 	width = min(len(counter), columns) * size
 	height = (math.floor(len(counter) / columns) + 1) * size
