@@ -7,7 +7,10 @@ from collections import defaultdict
 from PIL import Image, ImageDraw
 
 
-def extract(path, tolerance, limit=None):
+DEFAULT_TOLERANCE = 32
+
+
+def extract(path, tolerance=DEFAULT_TOLERANCE, limit=None):
 	pixels = load(path)
 	counter = count_colors(pixels)
 	tmp = dict()
@@ -118,12 +121,12 @@ def main():
 		"-t", "--tolerance",
 		nargs="?",
 		type=parse_tolerance,
-		default=32,
-		const=32,
+		default=DEFAULT_TOLERANCE,
+		const=DEFAULT_TOLERANCE,
 		metavar="N",
 		help="group colors to limit the output and give a better visual representation. "
 			"Based on a scale from 0 to 100. Where 0 won't group any color and 100 will group all colors into one. "
-			"Defaults to 32"
+			"Defaults to {0}".format(DEFAULT_TOLERANCE)
 	)
 	parser.add_argument(
 		"-l", "--limit",
