@@ -174,14 +174,22 @@ def main():
 		metavar="N",
 		help="upper limit to the number of extracted colors presented in the output"
 	)
+	parser.add_argument(
+		"-o", "--output",
+		choices=["all", "image", "text"],
+		default="all",
+		help="format(s) that the extracted colors should presented in"
+	)
 	args = parser.parse_args()
 
 	path = args.image[0]
 	filename = os.path.splitext(os.path.basename(path))[0]
 	counter, total = extract(path, args.tolerance, args.limit)
 
-	print_result(counter, total)
-	image_result(counter, 150, filename)
+	if args.output in ["all", "text"]:
+		print_result(counter, total)
+	if args.output in ["all", "image"]:
+		image_result(counter, 150, filename)
 
 
 if __name__ == "__main__":

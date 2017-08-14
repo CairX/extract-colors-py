@@ -115,6 +115,9 @@ Generated output from the command-line argument ``extcolors --help``.
                             colors into one. Defaults to 32
       -l [N], --limit [N]   upper limit to the number of extracted colors
                             presented in the output
+      -o {all,image,text}, --output {all,image,text}
+                            format(s) that the extracted colors should presented
+                            in
 
 
 ------------
