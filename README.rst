@@ -50,24 +50,7 @@ in RGB values and their occurrence rate presented in percentages.
 
 Output based on ``gameboy.png``: ::
 
-    [IMAGE]
-    Width: 800
-    Height: 600
-    Pixels: 480000
-    Color profile: None specified
-    Time: 0.23535561561584473 seconds
-
-    [COUNT]
-    Colors: 370
-    Time: 0.1484072208404541 seconds
-
-    [COMPRESS]
-    Colors: 7
-    Cmp time: 0.0051572322845458984 seconds, 7 times
-    Cmp avg. time: 0.7367474692208427 milliseconds
-    Time: 0.010311603546142578 seconds
-
-    [RESULT]
+    Extracted colors:
     (0, 172, 170)  :  80.43% (386062)
     (245, 245, 245):  12.41% (59559)
     (82, 90, 92)   :   3.71% (17824)
@@ -77,7 +60,6 @@ Output based on ``gameboy.png``: ::
     (241, 148, 185):   0.01% (36)
 
     Pixels in output: 480000 of 480000
-    Total time: 0.4513285160064697 seconds
 
 ++++++++++++++
 Output - Image

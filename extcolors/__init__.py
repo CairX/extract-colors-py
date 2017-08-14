@@ -7,18 +7,8 @@ from collections import defaultdict
 from PIL import Image, ImageDraw
 
 
-class Timer(object):
-	def __init__(self):
-		self.start = time.time()
-
-	def elapsed(self):
-		return time.time() - self.start
-
-
 def extract(path, tolerance, limit=None):
-	timer = Timer()
 	pixels = load(path)
-
 	counter = count_colors(pixels)
 	tmp = dict()
 	for color, count in counter.items():
@@ -32,41 +22,19 @@ def extract(path, tolerance, limit=None):
 
 	counter = [(colorutil.lab_rgb(c[0]), c[1]) for c in counter]
 
-	print("\nPixels in output: {} of {}".format(sum([c[1] for c in counter]), len(pixels)))
-	print("Total time: {} seconds".format(timer.elapsed()))
-
 	return counter, len(pixels)
 
 
 def load(path):
-	timer = Timer()
 	img = Image.open(path)
-	print(img.mode)
 	img = img.convert("RGB")
-	print(img.mode)
-	pixels = list(img.getdata())
-	width, height = img.size
-
-	print("\n[IMAGE]")
-	print("Width: {}".format(width))
-	print("Height: {}".format(height))
-	print("Pixels: {}".format(len(pixels)))
-	print("Color profile: {}".format(img.info.get("icc_profile", "None specified")))
-	print("Time: {} seconds".format(timer.elapsed()))
-
-	return pixels
+	return list(img.getdata())
 
 
 def count_colors(pixels):
-	timer = Timer()
 	counter = defaultdict(int)
 	for color in pixels:
 		counter[color] += 1
-
-	print("\n[COUNT]")
-	print("Colors: {}".format(len(counter)))
-	print("Time: {} seconds".format(timer.elapsed()))
-
 	return counter
 
 
@@ -75,13 +43,9 @@ def compress(counter, tolerance):
 	if tolerance <= 0:
 		return result
 
-	timer = Timer()
 	colors = [item[0] for item in sorted(counter.items(), key=lambda x: x[1], reverse=True)]
-
-	cmp_times = list()
 	i = 0
 	while i < len(colors):
-		cmp_timer = Timer()
 		larger = colors[i]
 
 		j = i + 1
@@ -93,22 +57,16 @@ def compress(counter, tolerance):
 				colors.remove(smaller)
 			else:
 				j += 1
-		cmp_times.append(cmp_timer.elapsed())
 		i += 1
-
-	print("\n[COMPRESS]")
-	print("Colors: {}".format(len(result)))
-	print("Cmp time: {} seconds, {} times".format(sum(cmp_times), len(cmp_times)))
-	print("Cmp avg. time: {} milliseconds".format(sum(cmp_times) * 1000 / len(cmp_times)))
-	print("Time: {} seconds".format(timer.elapsed()))
 
 	return result
 
 
 def print_result(counter, total):
-	print("\n[RESULT]")
+	print("Extracted colors:")
 	for key, value in counter:
 		print("{0:15}:{1:>7}% ({2})".format(str(key), "{0:.2f}".format(value / total * 100), value))
+	print("\nPixels in output: {} of {}".format(sum([c[1] for c in counter]), total))
 
 
 def image_result(counter, size, filename):
