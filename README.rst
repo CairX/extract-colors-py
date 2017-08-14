@@ -28,10 +28,11 @@ Installation
 Usage
 -----
 +++++
-Input
+Input - Console
 +++++
 To use the application provide a path to the image that the application should extract colors from.
 In the following example the image is in the folder we are executing the command and the name of the image is ``gameboy.png``:
+
 ::
 
     $ extcolors gameboy.png
@@ -40,6 +41,19 @@ In this example ``gameboy.png`` refers to the following `image <https://dribbble
 created by `Rebecca Machamer <https://dribbble.com/rebeccamachamer>`_.
 
 .. image:: http://cairns.se/extcolors/gameboy.png
+
++++++
+Input - Script
++++++
+To use the application provide a path to the image that the application should extract colors from.
+In the following example the image is in the folder we are executing the command and the name of the image is ``gameboy.png``:
+
+.. code:: python
+
+    >>> import extcolors
+    >>> colors, pixel_count = extcolors.extract("gameboy.png")
+    >>> print(colors)
+    [((0, 172, 170), 386062), ((245, 245, 245), 59559), ((82, 90, 92), 17824), ((102, 184, 52), 15080), ((236, 27, 111), 1302), ((255, 180, 0), 137), ((241, 148, 185), 36)]
 
 +++++++++++++
 Output - Text
