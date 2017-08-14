@@ -17,19 +17,16 @@ Installation
 1. Download repository as zip.
 2. Unpack zip into folder.
 3. Enter folder.
-4. Run the following command:
-    
-    ::
-        
-        $ pip install .
+4. Run the following command: ::
 
+        $ pip install .
 
 -----
 Usage
 -----
-+++++
++++++++++++++++
 Input - Console
-+++++
++++++++++++++++
 To use the application provide a path to the image that the application should extract colors from.
 In the following example the image is in the folder we are executing the command and the name of the image is ``gameboy.png``:
 
@@ -42,9 +39,9 @@ created by `Rebecca Machamer <https://dribbble.com/rebeccamachamer>`_.
 
 .. image:: http://cairns.se/extcolors/gameboy.png
 
-+++++
+++++++++++++++
 Input - Script
-+++++
+++++++++++++++
 To use the application provide a path to the image that the application should extract colors from.
 In the following example the image is in the folder we are executing the command and the name of the image is ``gameboy.png``:
 
@@ -91,6 +88,7 @@ Output based on ``gameboy.png``:
 Additional Options
 ------------------
 Generated output from the command-line argument ``extcolors --help``.
+
 ::
 
     usage: extcolors [-h] [--version] [-t [N]] [-l [N]] PATH
@@ -114,7 +112,6 @@ Generated output from the command-line argument ``extcolors --help``.
       -o {all,image,text}, --output {all,image,text}
                             format(s) that the extracted colors should presented
                             in
-
 
 ------------
 Known Issues
