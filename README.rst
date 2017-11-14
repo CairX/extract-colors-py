@@ -14,6 +14,16 @@ While the image will provide a palette for a visual representation.
 ------------
 Installation
 ------------
++++++++
+Package
++++++++
+::
+
+    $ pip install extcolors
+
+++++++++
+Manually
+++++++++
 1. Download repository as zip.
 2. Unpack zip into folder.
 3. Enter folder.
