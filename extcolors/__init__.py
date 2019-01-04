@@ -25,10 +25,12 @@ def extract(path, tolerance=DEFAULT_TOLERANCE, limit=None):
 	if limit:
 		counter = counter[:min(int(limit), len(counter))]
 
-	counter = [(colorutil.lab_rgb(c[0]), c[1]) for c in counter]
+	counter = [(to_int(colorutil.lab_rgb(c[0])), c[1]) for c in counter]
 
 	return counter, len(pixels)
 
+def to_int(tuple):
+	return int(tuple[0]), int(tuple[1]), int(tuple[2])
 
 def load(path):
 	img = Image.open(path)
@@ -70,20 +72,20 @@ def compress(counter, tolerance):
 def print_result(counter, total):
 	print("Extracted colors:")
 	for key, value in counter:
-		print("{0:15}:{1:>7}% ({2})".format(str(key), "{0:.2f}".format(value / total * 100), value))
+		print("{0:15}:{1:>7}% ({2})".format(str(key), "{0:.2f}".format((float(value) / float(total)) * 100.0), value))
 	print("\nPixels in output: {} of {}".format(sum([c[1] for c in counter]), total))
 
 
 def image_result(counter, size, filename):
 	columns = 5
-	width = min(len(counter), columns) * size
-	height = (math.floor(len(counter) / columns) + 1) * size
+	width = int(min(len(counter), columns) * size)
+	height = int((math.floor(len(counter) / columns) + 1) * size)
 
 	result = Image.new("RGBA", (width, height), (0, 0, 0, 0))
 	canvas = ImageDraw.Draw(result)
 	for idx, item in enumerate(counter):
-		x = (idx % columns) * size
-		y = math.floor(idx / columns) * size
+		x = int((idx % columns) * size)
+		y = int(math.floor(idx / columns) * size)
 		canvas.rectangle([(x, y), (x + size - 1, y + size - 1)], fill=item[0])
 
 	filename = "{0} {1}.png".format(filename, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
