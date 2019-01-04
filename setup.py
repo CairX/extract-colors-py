@@ -2,9 +2,9 @@ from setuptools import setup
 
 setup(
 	name="extcolors",
-	version="0.1.0",
-	description="Extract colors from a specified image. "
-				"Groups colors based on visual similarities using the CIE76 formula.",
+	version="0.1.1",
+	description="Extract colors from an image. "
+				"Colors are grouped based on visual similarities using the CIE76 formula.",
 	long_description=open("README.rst").read(),
 	url="https://github.com/CairX/extract-colors-py",
 	author="CairX",
