@@ -13,7 +13,7 @@ def cie76(c1, c2):
 	LAB Delta E - version CIE76
 	https://en.wikipedia.org/wiki/Color_difference
 
-	E* ≈ 2.3 corresponds to a JND (just noticeable difference)
+	E* = 2.3 corresponds to a JND (just noticeable difference)
 	"""
 	return math.sqrt(
 		math.pow(c2[0] - c1[0], 2) +
