@@ -6,6 +6,7 @@ setup(
 	description="Extract colors from an image. "
 				"Colors are grouped based on visual similarities using the CIE76 formula.",
 	long_description=open("README.rst").read(),
+	long_description_content_type="text/markdown",
 	url="https://github.com/CairX/extract-colors-py",
 	author="CairX",
 	author_email="lazycairx@gmail.com",
