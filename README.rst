@@ -60,7 +60,7 @@ In the following example the image is in the folder we are executing the command
     >>> import extcolors
     >>> colors, pixel_count = extcolors.extract("gameboy.png")
     >>> print(colors)
-    [((0, 172, 170), 386062), ((245, 245, 245), 59559), ((82, 90, 92), 17824), ((102, 184, 52), 15080), ((236, 27, 111), 1302), ((255, 180, 0), 137), ((241, 148, 185), 36)]
+    [((0, 172, 170), 385938), ((245, 245, 245), 59971), ((82, 90, 92), 17564), ((102, 184, 52), 15096), ((236, 27, 111), 1270), ((255, 180, 0), 121), ((252, 94, 158), 40)]
 
 +++++++++++++
 Output - Text
@@ -72,13 +72,12 @@ in RGB values and their occurrence rate presented in percentages.
 Output based on ``gameboy.png``: ::
 
     Extracted colors:
-    (0, 172, 170)  :  80.43% (386062)
-    (245, 245, 245):  12.41% (59559)
-    (82, 90, 92)   :   3.71% (17824)
-    (102, 184, 52) :   3.14% (15080)
-    (236, 27, 111) :   0.27% (1302)
-    (255, 180, 0)  :   0.03% (137)
-    (241, 148, 185):   0.01% (36)
+    (245, 245, 245):  12.49% (59971)
+    (82, 90, 92)   :   3.66% (17564)
+    (102, 184, 52) :   3.15% (15096)
+    (236, 27, 111) :   0.26% (1270)
+    (255, 180, 0)  :   0.03% (121)
+    (252, 94, 158) :   0.01% (40)
 
     Pixels in output: 480000 of 480000
 
@@ -136,9 +135,3 @@ become a simple counter resulting in much greater speeds.
 
 Example, an image (3840x2160) containing about 340k unique colors will take two hours to complete
 with a tolerance level of 32 (the default value). However with a tolerance level of zero it will take ten seconds.
-
-+++++++++++++++++++++++++++++++++++
-Adobe RGB Color Space Not Supported
-+++++++++++++++++++++++++++++++++++
-Currently only the sRGB color space is supported when converting to CIE L*a*b*.
-Which means that grouped colors might not visual match as one would expect.
