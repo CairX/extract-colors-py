@@ -14,20 +14,26 @@ DEFAULT_TOLERANCE = 32
 
 def extract(path, tolerance=DEFAULT_TOLERANCE, limit=None):
 	pixels = load(path)
-	counter = count_colors(pixels)
-	tmp = dict()
-	for color, count in counter.items():
-		tmp[colorutil.rgb_lab(color)] = count
+	rgb_colors = count_colors(pixels)
 
-	counter = compress(tmp, tolerance)
-	counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
+	if tolerance > 0:
+		lab_colors = dict()
+		for color, count in rgb_colors.items():
+			lab_colors[colorutil.rgb_lab(color)] = count
+
+		lab_colors = compress(lab_colors, tolerance)
+
+		rgb_colors = dict()
+		for color, count in lab_colors.items():
+			rgb_colors[colorutil.lab_rgb(color)] = count
+
+	rgb_colors = sorted(rgb_colors.items(), key=lambda x: x[1], reverse=True)
+	rgb_colors = [(to_int(c[0]), c[1]) for c in rgb_colors]
 
 	if limit:
-		counter = counter[:min(int(limit), len(counter))]
+		rgb_colors = rgb_colors[:min(int(limit), len(rgb_colors))]
 
-	counter = [(to_int(colorutil.lab_rgb(c[0])), c[1]) for c in counter]
-
-	return counter, len(pixels)
+	return rgb_colors, len(pixels)
 
 def to_int(tuple):
 	return int(tuple[0]), int(tuple[1]), int(tuple[2])
@@ -128,22 +134,23 @@ def main():
 		default=DEFAULT_TOLERANCE,
 		const=DEFAULT_TOLERANCE,
 		metavar="N",
-		help="group colors to limit the output and give a better visual representation. "
+		help="Group colors to limit the output and give a better visual representation. "
 			"Based on a scale from 0 to 100. Where 0 won't group any color and 100 will group all colors into one. "
-			"Defaults to {0}".format(DEFAULT_TOLERANCE)
+			"Tolerance 0 will also bypass all conversion. "
+			"Defaults to {0}.".format(DEFAULT_TOLERANCE)
 	)
 	parser.add_argument(
 		"-l", "--limit",
 		nargs="?",
 		type=parse_limit,
 		metavar="N",
-		help="upper limit to the number of extracted colors presented in the output"
+		help="Upper limit to the number of extracted colors presented in the output."
 	)
 	parser.add_argument(
 		"-o", "--output",
 		choices=["all", "image", "text"],
 		default="all",
-		help="format(s) that the extracted colors should presented in"
+		help="Format(s) that the extracted colors should presented in."
 	)
 	args = parser.parse_args()
 

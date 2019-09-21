@@ -100,7 +100,7 @@ Generated output from the command-line argument ``extcolors --help``.
 
 ::
 
-    usage: extcolors [-h] [--version] [-t [N]] [-l [N]] PATH
+    usage: extcolors [-h] [--version] [-t [N]] [-l [N]] [-o {all,image,text}] PATH
 
     Extract colors from a specified image. Colors are grouped based on visual
     similarities using the CIE76 formula.
@@ -112,15 +112,17 @@ Generated output from the command-line argument ``extcolors --help``.
       -h, --help            show this help message and exit
       --version             show program's version number and exit
       -t [N], --tolerance [N]
-                            group colors to limit the output and give a better
+                            Group colors to limit the output and give a better
                             visual representation. Based on a scale from 0 to 100.
                             Where 0 won't group any color and 100 will group all
-                            colors into one. Defaults to 32
-      -l [N], --limit [N]   upper limit to the number of extracted colors
-                            presented in the output
+                            colors into one. Tolerance 0 will also bypass all
+                            conversion. Defaults to 32.
+      -l [N], --limit [N]   Upper limit to the number of extracted colors
+                            presented in the output.
       -o {all,image,text}, --output {all,image,text}
-                            format(s) that the extracted colors should presented
-                            in
+                            Format(s) that the extracted colors should presented
+                            in.
+
 
 ------------
 Known Issues
