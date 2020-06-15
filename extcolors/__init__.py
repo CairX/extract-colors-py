@@ -12,8 +12,8 @@ from PIL import Image, ImageDraw
 DEFAULT_TOLERANCE = 32
 
 
-def extract(path, tolerance=DEFAULT_TOLERANCE, limit=None):
-	pixels = load(path)
+def extract_from_image(img, tolerance=DEFAULT_TOLERANCE, limit=None):
+	pixels = load(img)
 	rgb_colors = count_colors(pixels)
 
 	if tolerance > 0:
@@ -35,11 +35,17 @@ def extract(path, tolerance=DEFAULT_TOLERANCE, limit=None):
 
 	return rgb_colors, len(pixels)
 
+
+def extract(path, tolerance=DEFAULT_TOLERANCE, limit=None):
+	img = Image.open(path)
+	return extract_from_image(img, tolerance, limit)
+
+
 def to_int(tuple):
 	return int(tuple[0]), int(tuple[1]), int(tuple[2])
 
-def load(path):
-	img = Image.open(path)
+
+def load(img):
 	img = img.convert("RGB")
 	return list(img.getdata())
 
