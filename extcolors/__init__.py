@@ -36,7 +36,7 @@ def extract_from_image(img, tolerance=DEFAULT_TOLERANCE, limit=None):
 	return rgb_colors, len(pixels)
 
 
-def extract(path, tolerance=DEFAULT_TOLERANCE, limit=None):
+def extract_from_path(path, tolerance=DEFAULT_TOLERANCE, limit=None):
 	img = Image.open(path)
 	return extract_from_image(img, tolerance, limit)
 
@@ -162,7 +162,7 @@ def main():
 
 	path = args.image[0]
 	filename = os.path.splitext(os.path.basename(path))[0]
-	counter, total = extract(path, args.tolerance, args.limit)
+	counter, total = extract_from_path(path, args.tolerance, args.limit)
 
 	if args.output in ["all", "text"]:
 		print_result(counter, total)

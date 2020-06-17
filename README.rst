@@ -52,13 +52,24 @@ created by `Rebecca Machamer <https://dribbble.com/rebeccamachamer>`_.
 ++++++++++++++
 Input - Script
 ++++++++++++++
-To use the application provide a path to the image that the application should extract colors from.
+To use the application provide a path to the image that the colors should be extracted from.
 In the following example the image is in the folder we are executing the command and the name of the image is ``gameboy.png``:
 
 .. code:: python
 
     >>> import extcolors
-    >>> colors, pixel_count = extcolors.extract("gameboy.png")
+    >>> colors, pixel_count = extcolors.extract_from_path("gameboy.png")
+    >>> print(colors)
+    [((0, 172, 170), 385938), ((245, 245, 245), 59971), ((82, 90, 92), 17564), ((102, 184, 52), 15096), ((236, 27, 111), 1270), ((255, 180, 0), 121), ((252, 94, 158), 40)]
+
+There is also the option to use an image already loaded through `pillow <https://python-pillow.org/>`_.
+
+.. code:: python
+
+    >>> import extcolors
+    >>> import PIL
+    >>> img = PIL.Image.open("gameboy.png")
+    >>> colors, pixel_count = extcolors.extract_from_image(img)
     >>> print(colors)
     [((0, 172, 170), 385938), ((245, 245, 245), 59971), ((82, 90, 92), 17564), ((102, 184, 52), 15096), ((236, 27, 111), 1270), ((255, 180, 0), 121), ((252, 94, 158), 40)]
 
