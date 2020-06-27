@@ -29,6 +29,9 @@ setup(
 	keywords="extract colors image",
 	packages=["extcolors"],
 	install_requires=["Pillow"],
+	extras_require={
+		"dev": ["yapf ==0.30.0"]
+	},
 	entry_points={
 		"console_scripts": [
 			"extcolors=extcolors:main"
