@@ -34,7 +34,7 @@ setup(
 	},
 	entry_points={
 		"console_scripts": [
-			"extcolors=extcolors:main"
+			"extcolors=extcolors.command:main"
 		],
 	},
 )
