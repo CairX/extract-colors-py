@@ -1,0 +1,8 @@
+=====
+0.1.0
+=====
+---------------
+Initial release
+---------------
+Module and command line tool to extract colors from an image. Colors are
+grouped based on visual similarities using the CIE76 formula.

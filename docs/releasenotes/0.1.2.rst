@@ -1,0 +1,7 @@
+=====
+0.1.2
+=====
+---------------
+Python versions
+---------------
+Define support for version 3.4+ and extend support to 2.7.

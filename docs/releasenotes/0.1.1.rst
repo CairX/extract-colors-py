@@ -1,0 +1,8 @@
+=====
+0.1.1
+=====
+---------------------
+Package configuration
+---------------------
+Follow the same Python requirements defined by
+`Pillow <https://pypi.org/project/Pillow/>`_ (a required dependency).
