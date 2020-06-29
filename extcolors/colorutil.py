@@ -27,6 +27,14 @@ def rgb_xyz(rgb):
     The XYZ output is determined using D65 illuminate with a 2° observer angle.
     https://en.wikipedia.org/wiki/Illuminant_D65
 
+    The conversion matrix used was provided by Bruce Lindbloom:
+    http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+
+    Formulas for conversion:
+    http://www.brucelindbloom.com/index.html?Eqn_RGB_to_XYZ.html
+    https://easyrgb.com/en/math.php
+
+    Information about respective color space:
     sRGB (standard Red Green Blue): https://en.wikipedia.org/wiki/SRGB
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
@@ -52,6 +60,14 @@ def xyz_rgb(xyz):
     Conversion is based on that the XYZ input uses an the D65 illuminate with a 2° observer angle.
     https://en.wikipedia.org/wiki/Illuminant_D65
 
+    The inverse conversion matrix used was provided by Bruce Lindbloom:
+    http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+
+    Formulas for conversion:
+    http://www.brucelindbloom.com/index.html?Eqn_RGB_to_XYZ.html
+    https://easyrgb.com/en/math.php
+
+    Information about respective color space:
     sRGB (standard Red Green Blue): https://en.wikipedia.org/wiki/SRGB
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
@@ -77,6 +93,12 @@ def xyz_lab(xyz):
     Conversion is based on that the XYZ input uses an the D65 illuminate with a 2° observer angle.
     https://en.wikipedia.org/wiki/Illuminant_D65
 
+    Formulas for conversion:
+    https://en.wikipedia.org/wiki/CIELAB_color_space#CIELAB%E2%80%93CIEXYZ_conversions
+    http://www.brucelindbloom.com/index.html?Eqn_XYZ_to_Lab.html
+    https://easyrgb.com/en/math.php
+
+    Information about respective color space:
     CIE L*a*b: https://en.wikipedia.org/wiki/Lab_color_space
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
@@ -106,6 +128,12 @@ def lab_xyz(lab):
     The XYZ output is determined using D65 illuminate with a 2° observer angle.
     https://en.wikipedia.org/wiki/Illuminant_D65
 
+    Formulas for conversion:
+    https://en.wikipedia.org/wiki/CIELAB_color_space#CIELAB%E2%80%93CIEXYZ_conversions
+    http://www.brucelindbloom.com/index.html?Eqn_RGB_to_XYZ.html
+    https://easyrgb.com/en/math.php
+
+    Information about respective color space:
     CIE L*a*b: https://en.wikipedia.org/wiki/Lab_color_space
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
