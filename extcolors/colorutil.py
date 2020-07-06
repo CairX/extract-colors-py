@@ -118,22 +118,22 @@ def xyz_lab(xyz):
     CIE L*a*b: https://en.wikipedia.org/wiki/Lab_color_space
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
-    x = __pivot_xyz_lab(xyz[0] / 95.047)
-    y = __pivot_xyz_lab(xyz[1] / 100.000)
-    z = __pivot_xyz_lab(xyz[2] / 108.883)
+    x = __pivot_xyz_lab(xyz[0] / 95.0489)
+    y = __pivot_xyz_lab(xyz[1] / 100.0000)
+    z = __pivot_xyz_lab(xyz[2] / 108.8840)
 
     l = max(0.0, (116.0 * y) - 16.0)
-    a = 500.0 * (x - y)
-    b = 200.0 * (y - z)
+    a = (x - y) * 500.0
+    b = (y - z) * 200.0
 
     return l, a, b
 
 
 def __pivot_xyz_lab(value):
     if value > 0.008856:
-        value = math.pow(value, 1.0 / 3.0)
+        value = math.pow(value, 0.3333333)
     else:
-        value = (value * 7.787) + (16.0 / 116.0)
+        value = ((value * 903.3) + 16.0) / 116.0
     return value
 
 
@@ -153,23 +153,28 @@ def lab_xyz(lab):
     CIE L*a*b: https://en.wikipedia.org/wiki/Lab_color_space
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
-    y = (lab[0] + 16.0) / 116.0
-    x = lab[1] / 500.0 + y
-    z = y - lab[2] / 200.0
+    l = lab[0]
+    a = lab[1]
+    b = lab[2]
 
-    x = __pivot_lab_xyz(x) * 95.047
-    y = __pivot_lab_xyz(y) * 100.000
-    z = __pivot_lab_xyz(z) * 108.883
+    # Reminder: The y values is calculated first as it can be reused
+    # for the calculation of x and z.
+    y = (l + 16.0) / 116.0
+    x = y + (a / 500.0)
+    z = y - (b / 200.0)
+
+    x3 = math.pow(x, 3)
+    z3 = math.pow(z, 3)
+
+    x = x3 if x3 > 0.008856 else ((x * 116.0) - 16.0) / 903.3
+    y = math.pow(y, 3) if l > 7.9996248 else l / 903.3
+    z = z3 if z3 > 0.008856 else ((z * 116.0) - 16.0) / 903.3
+
+    x = x * 95.0489
+    y = y * 100.0000
+    z = z * 108.8840
 
     return x, y, z
-
-
-def __pivot_lab_xyz(value):
-    if value > 0.008856:
-        value = math.pow(value, 3)
-    else:
-        value = (value - 16.0 / 116.0) / 7.787
-    return value
 
 
 def rgb_lab(rgb):
