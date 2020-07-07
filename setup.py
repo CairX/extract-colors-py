@@ -32,7 +32,7 @@ setup(
 	python_requires=">=3.5",
 	keywords="extract colors image",
 	packages=["extcolors"],
-	install_requires=["Pillow"],
+	install_requires=["Pillow >=7.0.0"],
 	extras_require={
 		"dev": ["yapf ==0.30.0"]
 	},
