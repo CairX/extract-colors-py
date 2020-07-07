@@ -38,9 +38,9 @@ def rgb_xyz(rgb):
     sRGB (standard Red Green Blue): https://en.wikipedia.org/wiki/SRGB
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
-    r = __pivot_rgb_xyz(rgb[0] / 255.0)
-    g = __pivot_rgb_xyz(rgb[1] / 255.0)
-    b = __pivot_rgb_xyz(rgb[2] / 255.0)
+    r = _pivot_rgb_xyz(rgb[0] / 255.0)
+    g = _pivot_rgb_xyz(rgb[1] / 255.0)
+    b = _pivot_rgb_xyz(rgb[2] / 255.0)
 
     x = r * 0.4124564 + g * 0.3575761 + b * 0.1804375
     y = r * 0.2126729 + g * 0.7151522 + b * 0.0721750
@@ -53,7 +53,7 @@ def rgb_xyz(rgb):
     return x, y, z
 
 
-def __pivot_rgb_xyz(value):
+def _pivot_rgb_xyz(value):
     if value <= 0.04045:
         value = value / 12.92
     else:
@@ -87,14 +87,14 @@ def xyz_rgb(xyz):
     g = x * -0.9692660 + y * 1.8760108 + z * 0.0415560
     b = x * 0.0556434 + y * -0.2040259 + z * 1.0572252
 
-    r = __pivot_xyz_rgb(r) * 255.0
-    g = __pivot_xyz_rgb(g) * 255.0
-    b = __pivot_xyz_rgb(b) * 255.0
+    r = _pivot_xyz_rgb(r) * 255.0
+    g = _pivot_xyz_rgb(g) * 255.0
+    b = _pivot_xyz_rgb(b) * 255.0
 
     return round(r), round(g), round(b)
 
 
-def __pivot_xyz_rgb(value):
+def _pivot_xyz_rgb(value):
     if value <= 0.0031308:
         value = value * 12.92
     else:
@@ -118,9 +118,9 @@ def xyz_lab(xyz):
     CIE L*a*b: https://en.wikipedia.org/wiki/Lab_color_space
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
-    x = __pivot_xyz_lab(xyz[0] / 95.0489)
-    y = __pivot_xyz_lab(xyz[1] / 100.0000)
-    z = __pivot_xyz_lab(xyz[2] / 108.8840)
+    x = _pivot_xyz_lab(xyz[0] / 95.0489)
+    y = _pivot_xyz_lab(xyz[1] / 100.0000)
+    z = _pivot_xyz_lab(xyz[2] / 108.8840)
 
     l = max(0.0, (116.0 * y) - 16.0)
     a = (x - y) * 500.0
@@ -129,7 +129,7 @@ def xyz_lab(xyz):
     return l, a, b
 
 
-def __pivot_xyz_lab(value):
+def _pivot_xyz_lab(value):
     if value > 0.008856:
         value = math.pow(value, 0.3333333)
     else:
