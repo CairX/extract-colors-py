@@ -38,9 +38,13 @@ def rgb_xyz(rgb):
     sRGB (standard Red Green Blue): https://en.wikipedia.org/wiki/SRGB
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
-    r = _pivot_rgb_xyz(rgb[0] / 255.0)
-    g = _pivot_rgb_xyz(rgb[1] / 255.0)
-    b = _pivot_rgb_xyz(rgb[2] / 255.0)
+    r = rgb[0] / 255.0
+    g = rgb[1] / 255.0
+    b = rgb[2] / 255.0
+
+    r = _pivot_rgb_xyz(r)
+    g = _pivot_rgb_xyz(g)
+    b = _pivot_rgb_xyz(b)
 
     x = r * 0.4124564 + g * 0.3575761 + b * 0.1804375
     y = r * 0.2126729 + g * 0.7151522 + b * 0.0721750
@@ -87,9 +91,13 @@ def xyz_rgb(xyz):
     g = x * -0.9692660 + y * 1.8760108 + z * 0.0415560
     b = x * 0.0556434 + y * -0.2040259 + z * 1.0572252
 
-    r = _pivot_xyz_rgb(r) * 255.0
-    g = _pivot_xyz_rgb(g) * 255.0
-    b = _pivot_xyz_rgb(b) * 255.0
+    r = _pivot_xyz_rgb(r)
+    g = _pivot_xyz_rgb(g)
+    b = _pivot_xyz_rgb(b)
+
+    r = r * 255.0
+    g = g * 255.0
+    b = b * 255.0
 
     return round(r), round(g), round(b)
 
@@ -118,9 +126,13 @@ def xyz_lab(xyz):
     CIE L*a*b: https://en.wikipedia.org/wiki/Lab_color_space
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
-    x = _pivot_xyz_lab(xyz[0] / 95.0489)
-    y = _pivot_xyz_lab(xyz[1] / 100.0000)
-    z = _pivot_xyz_lab(xyz[2] / 108.8840)
+    x = xyz[0] / 95.0489
+    y = xyz[1] / 100.0000
+    z = xyz[2] / 108.8840
+
+    x = _pivot_xyz_lab(x)
+    y = _pivot_xyz_lab(y)
+    z = _pivot_xyz_lab(z)
 
     l = max(0.0, (116.0 * y) - 16.0)
     a = (x - y) * 500.0
