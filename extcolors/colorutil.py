@@ -15,9 +15,10 @@ def cie76(c1, c2):
 
     E* = 2.3 corresponds to a JND (just noticeable difference)
     """
-    return math.sqrt(
-        math.pow(c2[0] - c1[0], 2) + math.pow(c2[1] - c1[1], 2) +
-        math.pow(c2[2] - c1[2], 2))
+    l = c2[0] - c1[0]
+    a = c2[1] - c1[1]
+    b = c2[2] - c1[2]
+    return math.sqrt((l * l) + (a * a) + (b * b))
 
 
 def rgb_xyz(rgb):
@@ -175,11 +176,11 @@ def lab_xyz(lab):
     x = y + (a / 500.0)
     z = y - (b / 200.0)
 
-    x3 = math.pow(x, 3)
-    z3 = math.pow(z, 3)
+    x3 = x * x * x
+    z3 = z * z * z
 
     x = x3 if x3 > 0.008856 else ((x * 116.0) - 16.0) / 903.3
-    y = math.pow(y, 3) if l > 7.9996248 else l / 903.3
+    y = (y * y * y) if l > 7.9996248 else l / 903.3
     z = z3 if z3 > 0.008856 else ((z * 116.0) - 16.0) / 903.3
 
     x = x * 95.0489
