@@ -127,9 +127,9 @@ def xyz_lab(xyz):
     CIE L*a*b: https://en.wikipedia.org/wiki/Lab_color_space
     CIE XYZ: https://en.wikipedia.org/wiki/CIE_1931_color_space
     """
-    x = xyz[0] / 95.0489
-    y = xyz[1] / 100.0000
-    z = xyz[2] / 108.8840
+    x = xyz[0] / 95.047
+    y = xyz[1] / 100.000
+    z = xyz[2] / 108.883
 
     x = _pivot_xyz_lab(x)
     y = _pivot_xyz_lab(y)
@@ -183,9 +183,9 @@ def lab_xyz(lab):
     y = (y * y * y) if l > 7.9996248 else l / 903.3
     z = z3 if z3 > 0.008856 else ((z * 116.0) - 16.0) / 903.3
 
-    x = x * 95.0489
-    y = y * 100.0000
-    z = z * 108.8840
+    x = x * 95.047
+    y = y * 100.000
+    z = z * 108.883
 
     return x, y, z
 
