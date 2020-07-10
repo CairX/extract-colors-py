@@ -4,7 +4,8 @@ import collections
 
 from PIL import Image, ImageDraw
 
-from extcolors import colorutil
+from extcolors import conversion
+from extcolors import difference
 
 DEFAULT_TOLERANCE = 32
 
@@ -16,13 +17,13 @@ def extract_from_image(img, tolerance=DEFAULT_TOLERANCE, limit=None):
     if tolerance > 0:
         lab_colors = dict()
         for color, count in rgb_colors.items():
-            lab_colors[colorutil.rgb_lab(color)] = count
+            lab_colors[conversion.rgb_lab(color)] = count
 
         lab_colors = compress(lab_colors, tolerance)
 
         rgb_colors = dict()
         for color, count in lab_colors.items():
-            rgb_colors[colorutil.lab_rgb(color)] = count
+            rgb_colors[conversion.lab_rgb(color)] = count
 
     rgb_colors = sorted(rgb_colors.items(), key=lambda x: x[1], reverse=True)
     rgb_colors = [(round_color(c[0]), c[1]) for c in rgb_colors]
@@ -70,7 +71,7 @@ def compress(counter, tolerance):
         j = i + 1
         while j < len(colors):
             smaller = colors[j]
-            if colorutil.cie76(smaller, larger) < tolerance:
+            if difference.cie76(smaller, larger) < tolerance:
                 result[larger] += result[smaller]
                 result.pop(smaller)
                 colors.remove(smaller)
