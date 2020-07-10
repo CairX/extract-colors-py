@@ -100,7 +100,7 @@ def xyz_rgb(xyz):
     g = g * 255.0
     b = b * 255.0
 
-    return round(r), round(g), round(b)
+    return r, g, b
 
 
 def _pivot_xyz_rgb(value):

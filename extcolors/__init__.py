@@ -25,7 +25,7 @@ def extract_from_image(img, tolerance=DEFAULT_TOLERANCE, limit=None):
             rgb_colors[colorutil.lab_rgb(color)] = count
 
     rgb_colors = sorted(rgb_colors.items(), key=lambda x: x[1], reverse=True)
-    rgb_colors = [(to_int(c[0]), c[1]) for c in rgb_colors]
+    rgb_colors = [(round_color(c[0]), c[1]) for c in rgb_colors]
 
     if limit:
         rgb_colors = rgb_colors[:min(int(limit), len(rgb_colors))]
@@ -38,8 +38,8 @@ def extract_from_path(path, tolerance=DEFAULT_TOLERANCE, limit=None):
     return extract_from_image(img, tolerance, limit)
 
 
-def to_int(tuple):
-    return int(tuple[0]), int(tuple[1]), int(tuple[2])
+def round_color(tuple):
+    return round(tuple[0]), round(tuple[1]), round(tuple[2])
 
 
 def load(img):
