@@ -34,7 +34,10 @@ setup(
 	packages=["extcolors"],
 	install_requires=["Pillow >=7.0.0"],
 	extras_require={
-		"dev": ["yapf ==0.30.0"]
+		"dev": [
+			"yapf ==0.30.0",
+			"pytest ==5.4.3",
+		]
 	},
 	entry_points={
 		"console_scripts": [
