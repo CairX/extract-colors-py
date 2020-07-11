@@ -6,8 +6,8 @@ import math
 def cie76(c1, c2):
     """
     Color comparision using CIE76 algorithm.
-    Returns a value between 0 and 100.
-    Where 0 is a perfect match and 100 is opposing colors.
+    Returns a float value where 0 is a perfect match and 100 is
+    opposing colors. Note that the range can be larger than 100.
     http://zschuessler.github.io/DeltaE/learn/
 
     LAB Delta E - version CIE76
