@@ -13,3 +13,6 @@ venv/
 *.egg-info/
 build/
 dist/
+
+# tox Enviroment
+.tox/

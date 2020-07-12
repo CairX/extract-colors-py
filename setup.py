@@ -35,8 +35,9 @@ setup(
 	install_requires=["Pillow >=7.0.0"],
 	extras_require={
 		"dev": [
-			"yapf ==0.30.0",
 			"pytest ==5.4.3",
+			"tox ==3.16.0",
+			"yapf ==0.30.0",
 		]
 	},
 	entry_points={
