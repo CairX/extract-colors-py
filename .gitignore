@@ -9,9 +9,6 @@ __pycache__/
 # Python Virtual Environment
 venv/
 
-# Extractor results
-results/
-
 # Python egg metadata, regenerated from source files by setuptools.
 *.egg-info/
 build/
