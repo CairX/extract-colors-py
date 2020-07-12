@@ -10,37 +10,34 @@ from extcolors import difference
 DEFAULT_TOLERANCE = 32
 
 
+class Color:
+    def __init__(self, rgb=None, lab=None, count=0):
+        self.rgb = rgb
+        self.lab = lab
+        self.count = count
+        self.compressed = False
+
+    def __lt__(self, other):
+        return self.count < other.count
+
+
 def extract_from_image(img, tolerance=DEFAULT_TOLERANCE, limit=None):
     pixels = load(img)
-    rgb_colors = count_colors(pixels)
-
-    if tolerance > 0:
-        lab_colors = dict()
-        for color, count in rgb_colors.items():
-            lab_colors[conversion.rgb_lab(color)] = count
-
-        lab_colors = compress(lab_colors, tolerance)
-
-        rgb_colors = dict()
-        for color, count in lab_colors.items():
-            rgb_colors[conversion.lab_rgb(color)] = count
-
-    rgb_colors = sorted(rgb_colors.items(), key=lambda x: x[1], reverse=True)
-    rgb_colors = [(round_color(c[0]), c[1]) for c in rgb_colors]
+    colors = count_colors(pixels)
+    colors = compress(colors, tolerance)
 
     if limit:
-        rgb_colors = rgb_colors[:min(int(limit), len(rgb_colors))]
+        limit = min(int(limit), len(colors))
+        colors = colors[:limit]
 
-    return rgb_colors, len(pixels)
+    colors = [(color.rgb, color.count) for color in colors]
+
+    return colors, len(pixels)
 
 
 def extract_from_path(path, tolerance=DEFAULT_TOLERANCE, limit=None):
     img = Image.open(path)
     return extract_from_image(img, tolerance, limit)
-
-
-def round_color(tuple):
-    return round(tuple[0]), round(tuple[1]), round(tuple[2])
 
 
 def load(img):
@@ -52,31 +49,39 @@ def count_colors(pixels):
     counter = collections.defaultdict(int)
     for color in pixels:
         counter[color] += 1
-    return counter
+
+    colors = []
+    for rgb, count in counter.items():
+        lab = conversion.rgb_lab(rgb)
+        colors.append(Color(rgb=rgb, lab=lab, count=count))
+
+    return colors
 
 
-def compress(counter, tolerance):
-    result = counter
+def compress(colors, tolerance):
+    colors.sort(reverse=True)
+
     if tolerance <= 0:
-        return result
+        return colors
 
-    colors = [
-        item[0]
-        for item in sorted(counter.items(), key=lambda x: x[1], reverse=True)
-    ]
     i = 0
     while i < len(colors):
         larger = colors[i]
 
-        j = i + 1
-        while j < len(colors):
-            smaller = colors[j]
-            if difference.cie76(smaller, larger) < tolerance:
-                result[larger] += result[smaller]
-                result.pop(smaller)
-                colors.remove(smaller)
-            else:
+        if not larger.compressed:
+            j = i + 1
+            while j < len(colors):
+                smaller = colors[j]
+
+                if not smaller.compressed and difference.cie76(
+                        larger.lab, smaller.lab) < tolerance:
+                    larger.count += smaller.count
+                    smaller.compressed = True
+
                 j += 1
         i += 1
 
-    return result
+    colors = [color for color in colors if not color.compressed]
+    colors.sort(reverse=True)
+
+    return colors

@@ -10,27 +10,30 @@ from PIL import Image, ImageDraw
 from extcolors import DEFAULT_TOLERANCE, extract_from_path
 
 
-def print_result(counter, total):
+def print_result(colors, total):
     print("Extracted colors:")
-    for key, value in counter:
-        print("{0:15}:{1:>7}% ({2})".format(
-            str(key), "{0:.2f}".format((float(value) / float(total)) * 100.0),
-            value))
-    print("\nPixels in output: {} of {}".format(sum([c[1] for c in counter]),
-                                                total))
+    for color in colors:
+        rgb = str(color[0])
+        count = color[1]
+        percentage = "{0:.2f}".format((float(count) / float(total)) * 100.0)
+        print("{0:15}:{1:>7}% ({2})".format(rgb, percentage, count))
+
+    pixel_count = sum([color[1] for color in colors])
+    print("\nPixels in output: {} of {}".format(pixel_count, total))
 
 
-def image_result(counter, size, filename):
+def image_result(colors, size, filename):
     columns = 5
-    width = int(min(len(counter), columns) * size)
-    height = int((math.floor(len(counter) / columns) + 1) * size)
+    width = int(min(len(colors), columns) * size)
+    height = int((math.floor(len(colors) / columns) + 1) * size)
 
     result = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     canvas = ImageDraw.Draw(result)
-    for idx, item in enumerate(counter):
+    for idx, color in enumerate(colors):
         x = int((idx % columns) * size)
         y = int(math.floor(idx / columns) * size)
-        canvas.rectangle([(x, y), (x + size - 1, y + size - 1)], fill=item[0])
+        canvas.rectangle([(x, y), (x + size - 1, y + size - 1)],
+                         fill=color[0])
 
     filename = "{0} {1}.png".format(
         filename, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
@@ -94,9 +97,9 @@ def main():
 
     path = args.image[0]
     filename = os.path.splitext(os.path.basename(path))[0]
-    counter, total = extract_from_path(path, args.tolerance, args.limit)
+    colors, total = extract_from_path(path, args.tolerance, args.limit)
 
     if args.output in ["all", "text"]:
-        print_result(counter, total)
+        print_result(colors, total)
     if args.output in ["all", "image"]:
-        image_result(counter, 150, filename)
+        image_result(colors, 150, filename)
