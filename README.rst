@@ -60,7 +60,7 @@ In the following example the image is in the folder we are executing the command
     >>> import extcolors
     >>> colors, pixel_count = extcolors.extract_from_path("gameboy.png")
     >>> print(colors)
-    [((0, 172, 170), 385938), ((245, 245, 245), 59971), ((82, 90, 92), 17564), ((102, 184, 52), 15096), ((236, 27, 111), 1270), ((255, 180, 0), 121), ((252, 94, 158), 40)]
+    [((0, 172, 170), 386062), ((245, 245, 245), 59559), ((82, 90, 92), 17824), ((102, 184, 52), 15080), ((236, 27, 111), 1302), ((255, 180, 0), 137), ((241, 148, 185), 36)]
 
 There is also the option to use an image already loaded through `pillow <https://python-pillow.org/>`_.
 
@@ -71,7 +71,7 @@ There is also the option to use an image already loaded through `pillow <https:/
     >>> img = PIL.Image.open("gameboy.png")
     >>> colors, pixel_count = extcolors.extract_from_image(img)
     >>> print(colors)
-    [((0, 172, 170), 385938), ((245, 245, 245), 59971), ((82, 90, 92), 17564), ((102, 184, 52), 15096), ((236, 27, 111), 1270), ((255, 180, 0), 121), ((252, 94, 158), 40)]
+    [((0, 172, 170), 386062), ((245, 245, 245), 59559), ((82, 90, 92), 17824), ((102, 184, 52), 15080), ((236, 27, 111), 1302), ((255, 180, 0), 137), ((241, 148, 185), 36)]
 
 +++++++++++++
 Output - Text
@@ -83,12 +83,13 @@ in RGB values and their occurrence rate presented in percentages.
 Output based on ``gameboy.png``: ::
 
     Extracted colors:
-    (245, 245, 245):  12.49% (59971)
-    (82, 90, 92)   :   3.66% (17564)
-    (102, 184, 52) :   3.15% (15096)
-    (236, 27, 111) :   0.26% (1270)
-    (255, 180, 0)  :   0.03% (121)
-    (252, 94, 158) :   0.01% (40)
+    (0, 172, 170)  :  80.43% (386062)
+    (245, 245, 245):  12.41% (59559)
+    (82, 90, 92)   :   3.71% (17824)
+    (102, 184, 52) :   3.14% (15080)
+    (236, 27, 111) :   0.27% (1302)
+    (255, 180, 0)  :   0.03% (137)
+    (241, 148, 185):   0.01% (36)
 
     Pixels in output: 480000 of 480000
 
