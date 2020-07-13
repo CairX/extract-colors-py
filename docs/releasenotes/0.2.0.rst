@@ -1,0 +1,64 @@
+=====
+0.2.0
+=====
+-----------
+API changes
+-----------
+The function ``extract`` has been renamed ``extract_from_path`` with the
+addition of a new function ``extract_from_image``.
+
+.. code:: python
+
+    >>> import extcolors
+    >>> colors, pixel_count = extcolors.extract_from_path("gameboy.png")
+
+The addition of ``extract_from_image`` was contributed by
+`ashirviskas <https://github.com/ashirviskas>`_. The function can be
+used if an image has already been loaded using
+`Pillow <https://python-pillow.org/>`_.
+
+.. code:: python
+
+    >>> import extcolors
+    >>> import PIL
+    >>> img = PIL.Image.open("gameboy.png")
+    >>> colors, pixel_count = extcolors.extract_from_image(img)
+
+----------------------------
+Stability of reported colors
+----------------------------
+The implementation has changed to report the RGB colors produced by
+Pillow directly and perform color space conversion in only one
+direction. The change should eliminate any instability in the reported
+colors.
+
+-----------------------
+Performance improvement
+-----------------------
+The modification done to increase the stability of the reported colors
+was an opportunity to change the data structures used. The new data
+structures allowed for some additional modifications that improve
+the performance of extracting colors from some medium complex images.
+
+As an example: an image with 223715 unique colors showed a dramatic
+speed increase, the color extraction went from taking almost 19 minutes
+to just above 4 seconds.
+
+---------------
+Python versions
+---------------
+Support for Python 3.4 was dropped as the version reached end-of-life
+on March the 18th 2019.
+`PEP 429 - Python 3.4 Release Schedule <https://www.python.org/dev/peps/pep-0429/>`_.
+
+Support for Python 2.7 was dropped as the version reached end-of-life
+on January the 1st 2020. With the final release being published
+on April the 20th 2020.
+`PEP 373 - Python 2.7 Release Schedule <https://www.python.org/dev/peps/pep-0373/>`_
+
+--------------
+Pillow version
+--------------
+The required version of Pillow has been defined to 7.0.0 or above.
+With that the packages will require the same Python versions, making
+them compatible.
