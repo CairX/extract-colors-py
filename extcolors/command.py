@@ -63,7 +63,7 @@ def main():
     )
     parser.add_argument("--version",
                         action="version",
-                        version="%(prog)s 0.1.2")
+                        version="%(prog)s 0.2.0")
     parser.add_argument("image", nargs=1, metavar="PATH")
     parser.add_argument(
         "-t",
