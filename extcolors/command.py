@@ -7,7 +7,7 @@ import time
 
 from PIL import Image, ImageDraw
 
-from extcolors import DEFAULT_TOLERANCE, extract_from_path
+from extcolors import __version__, DEFAULT_TOLERANCE, extract_from_path
 
 
 def print_result(colors, total):
@@ -63,7 +63,7 @@ def main():
     )
     parser.add_argument("--version",
                         action="version",
-                        version="%(prog)s 0.2.0")
+                        version="%(prog)s {}".format(__version__))
     parser.add_argument("image", nargs=1, metavar="PATH")
     parser.add_argument(
         "-t",
