@@ -24,9 +24,9 @@ class Color:
 
 
 def extract_from_image(img, tolerance=DEFAULT_TOLERANCE, limit=None):
-    pixels = load(img)
-    colors = count_colors(pixels)
-    colors = compress(colors, tolerance)
+    pixels = _load(img)
+    colors = _count_colors(pixels)
+    colors = _compress(colors, tolerance)
 
     if limit:
         limit = min(int(limit), len(colors))
@@ -42,12 +42,12 @@ def extract_from_path(path, tolerance=DEFAULT_TOLERANCE, limit=None):
     return extract_from_image(img, tolerance, limit)
 
 
-def load(img):
+def _load(img):
     img = img.convert("RGB")
     return list(img.getdata())
 
 
-def count_colors(pixels):
+def _count_colors(pixels):
     counter = collections.defaultdict(int)
     for color in pixels:
         counter[color] += 1
@@ -60,7 +60,7 @@ def count_colors(pixels):
     return colors
 
 
-def compress(colors, tolerance):
+def _compress(colors, tolerance):
     colors.sort(reverse=True)
 
     if tolerance <= 0:
