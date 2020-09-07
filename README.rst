@@ -139,6 +139,56 @@ Generated output from the command-line argument ``extcolors --help``.
 ------------
 Known Issues
 ------------
+++++++++++++
+Transparency
+++++++++++++
+The support for images with transparency is limited. Colors that are
+fully transparent will be filtered out and will not be counted towards
+the colors in the result. Colors that have any level of transparency
+other than zero will be kept but the transparency will not be considered
+when comparing colors. If a more accurate result is desired the
+recommendation would be to apply a background color and perform a
+blend in an external application before extracting the colors.
+
+Example - Full Transparency
+***************************
+The following image is 64 by 64 pixels large. The image consists of a
+border that is eight pixels wide and a fully transparent center.
+
+.. image:: http://cairns.se/extcolors/example_fully_transparent.png
+
+Extracting colors from the image results in following where one can
+observe how the fully transparent pixels are removed from the
+percentage count.
+
+::
+
+    Extracted colors:
+    (34, 32, 52)   : 100.00% (1792)
+
+    Pixels in output: 1792 of 4096
+
+
+Example - Partial Transparency
+******************************
+The following image is 64 by 64 pixels large. The image consists of
+a border that is eight pixels wide and a center that has the same color
+as the border but with the alpha value set to 50% transparency.
+
+.. image:: http://cairns.se/extcolors/example_partially_transparent.png
+
+Extracting colors from the image results in following where one can
+observe how the semi transparent color has been combined with the fully
+opaque color as the transparency was disregarded when the two
+colors were compared.
+
+::
+
+    Extracted colors:
+    (34, 32, 52)   : 100.00% (4096)
+
+    Pixels in output: 4096 of 4096
+
 +++++++++++
 Performance
 +++++++++++

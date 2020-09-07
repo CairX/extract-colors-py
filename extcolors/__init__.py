@@ -25,6 +25,9 @@ class Color:
 
 def extract_from_image(img, tolerance=DEFAULT_TOLERANCE, limit=None):
     pixels = _load(img)
+    pixel_count = len(pixels)
+    pixels = _filter_fully_transparent(pixels)
+    pixels = _strip_alpha(pixels)
     colors = _count_colors(pixels)
     colors = _compress(colors, tolerance)
 
@@ -34,7 +37,7 @@ def extract_from_image(img, tolerance=DEFAULT_TOLERANCE, limit=None):
 
     colors = [(color.rgb, color.count) for color in colors]
 
-    return colors, len(pixels)
+    return colors, pixel_count
 
 
 def extract_from_path(path, tolerance=DEFAULT_TOLERANCE, limit=None):
@@ -43,8 +46,16 @@ def extract_from_path(path, tolerance=DEFAULT_TOLERANCE, limit=None):
 
 
 def _load(img):
-    img = img.convert("RGB")
+    img = img.convert("RGBA")
     return list(img.getdata())
+
+
+def _filter_fully_transparent(pixels):
+    return [p for p in pixels if p[3] > 0]
+
+
+def _strip_alpha(pixels):
+    return [(p[0], p[1], p[2]) for p in pixels]
 
 
 def _count_colors(pixels):

@@ -10,16 +10,16 @@ from PIL import Image, ImageDraw
 from extcolors import __version__, DEFAULT_TOLERANCE, extract_from_path
 
 
-def print_result(colors, total):
+def print_result(colors, pixel_count):
     print("Extracted colors:")
+    color_count = sum([color[1] for color in colors])
     for color in colors:
         rgb = str(color[0])
         count = color[1]
-        percentage = "{0:.2f}".format((float(count) / float(total)) * 100.0)
+        percentage = "{0:.2f}".format((float(count) / float(color_count)) * 100.0)
         print("{0:15}:{1:>7}% ({2})".format(rgb, percentage, count))
 
-    pixel_count = sum([color[1] for color in colors])
-    print("\nPixels in output: {} of {}".format(pixel_count, total))
+    print("\nPixels in output: {} of {}".format(color_count, pixel_count))
 
 
 def image_result(colors, size, filename):
