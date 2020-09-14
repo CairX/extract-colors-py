@@ -1,0 +1,15 @@
+=====
+0.2.1
+=====
+--------------------------------
+Partial support for transparency
+--------------------------------
+Previously pixel that were fully transparent would be counted towards
+black which would skew the result. Now fully transparent pixels will
+be ignored and not counted towards the total.
+
+-------------------------
+Incorrect command version
+-------------------------
+When calling extcolors from the command line the reported version
+wouldn't match the installed version.
