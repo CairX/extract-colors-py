@@ -76,9 +76,9 @@ There is also the option to use an image already loaded through `pillow <https:/
 +++++++++++++
 Output - Text
 +++++++++++++
-When the application is done it will output information about the execution.
-Probably the most relevant information is the ``[RESULT]``-section that contains the extracted colors
-in RGB values and their occurrence rate presented in percentages.
+When the application is done it will output information about the
+execution. The information contains the extracted colors presented in
+the RGB color space along with their occurrence rate.
 
 Output based on ``gameboy.png``: ::
 
@@ -96,14 +96,36 @@ Output based on ``gameboy.png``: ::
 ++++++++++++++
 Output - Image
 ++++++++++++++
-When the application is done it will also create an image in the directory where the command was executed.
-The image will contain the colors that where extracted sorted based on their occurrence rate, wrapping from  from left to right.
-The image will use the name of the original image appended with a time stamp of when the execution took place.
+Optionally when the application is done it can create an image which
+will contain the colors that where extracted sorted based on their
+occurrence rate, wrapping from  from left to right.
 
-Output based on ``gameboy.png``:
+If a name is provided that will be used otherwise the image will use the name of
+the original image along with an appended time stamp.
+
+::
+
+    $ extcolors gameboy.png --image gameboy-palette
 
 .. image:: http://cairns.se/extcolors/gameboy-result-default.png
 
++++++++++++++++++++++++++++
+Output - GIMP Color Palette
++++++++++++++++++++++++++++
+Optionally when the application is done it can create a GIMP color
+palette. The colors that where extracted will sorted based in the
+palette based on their occurrence rate.
+
+If a name is provided that will be used for both the palette within the
+file as well as the filename. If a name isn't provided the palette will
+use the name of the original image and the file will be the original
+along with an appended time stamp.
+
+::
+
+    $ extcolors gameboy.png --gpl "GameBoy Palette"
+
+.. image:: http://cairns.se/extcolors/gameboy-result-default.png
 
 ------------------
 Additional Options
@@ -112,7 +134,7 @@ Generated output from the command-line argument ``extcolors --help``.
 
 ::
 
-    usage: extcolors [-h] [--version] [-t [N]] [-l [N]] [-o {all,image,text}] PATH
+    usage: extcolors [-h] [--version] [-t [N]] [-l [N]] [-s] [-i [NAME]] [-g [NAME]] PATH
 
     Extract colors from a specified image. Colors are grouped based on visual
     similarities using the CIE76 formula.
@@ -124,16 +146,23 @@ Generated output from the command-line argument ``extcolors --help``.
       -h, --help            show this help message and exit
       --version             show program's version number and exit
       -t [N], --tolerance [N]
-                            Group colors to limit the output and give a better
-                            visual representation. Based on a scale from 0 to 100.
-                            Where 0 won't group any color and 100 will group all
-                            colors into one. Tolerance 0 will also bypass all
-                            conversion. Defaults to 32.
-      -l [N], --limit [N]   Upper limit to the number of extracted colors
-                            presented in the output.
-      -o {all,image,text}, --output {all,image,text}
-                            Format(s) that the extracted colors should presented
-                            in.
+                            Group colors to limit the output and give a
+                            better visual representation. Based on a
+                            scale from 0 to 100. Where 0 won't group any
+                            color and 100 will group all colors into one.
+                            Tolerance 0 will bypass all conversion.
+                            Defaults to 32.
+      -l [N], --limit [N]   Upper limit to the number of extracted
+                            colors presented in the output.
+      -s, --silence         Silences the default output. Doesn't effect
+                            any other output option.
+      -i [NAME], --image [NAME]
+                            Output the result to an image palette.
+                            A name for the file can be supplied.
+      -g [NAME], --gpl [NAME]
+                            Output the result to a GIMP color palette (GPL).
+                            A name for the palette can be supplied.
+
 
 
 ------------

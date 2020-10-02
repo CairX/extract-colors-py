@@ -35,9 +35,15 @@ def image_result(colors, size, filename):
         canvas.rectangle([(x, y), (x + size - 1, y + size - 1)],
                          fill=color[0])
 
-    filename = "{0} {1}.png".format(
-        filename, time.strftime("%Y-%m-%d %H%M%S", time.localtime()))
     result.save(filename, "PNG")
+
+
+def gimp_color_palette_result(colors, filename, palette):
+    with open(filename, "w", encoding="utf-8") as file:
+        file.write("GIMP Palette\nName: {0}\n".format(palette))
+        for color in colors:
+            rgb = color[0]
+            file.write("{0}\t{1}\t{2}\n".format(rgb[0], rgb[1], rgb[2]))
 
 
 def parse_tolerance(value):
@@ -56,15 +62,28 @@ def parse_limit(value):
     return value
 
 
+def construct_filename(original, custom, timestamp, extension):
+    filename = ""
+    if isinstance(custom, str):
+        filename = custom
+        if not filename.endswith(extension):
+            filename = "{0}{1}".format(filename, extension)
+    else:
+        filename = "{0} {1}{2}".format(original, timestamp, extension)
+    return filename
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Extract colors from a specified image. "
         "Colors are grouped based on visual similarities using the CIE76 formula."
     )
-    parser.add_argument("--version",
-                        action="version",
-                        version="%(prog)s {}".format(__version__))
-    parser.add_argument("image", nargs=1, metavar="PATH")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s {}".format(__version__)
+    )
+    parser.add_argument("path", nargs=1, metavar="PATH")
     parser.add_argument(
         "-t",
         "--tolerance",
@@ -88,18 +107,48 @@ def main():
         "Upper limit to the number of extracted colors presented in the output."
     )
     parser.add_argument(
-        "-o",
-        "--output",
-        choices=["all", "image", "text"],
-        default="all",
-        help="Format(s) that the extracted colors should presented in.")
+        "-s",
+        "--silence",
+        action="store_true",
+        help=
+        "Silences the default output. "
+        "Doesn't effect any other output option."
+    )
+    parser.add_argument(
+        "-i",
+        "--image",
+        nargs="?",
+        default=None,
+        const=True,
+        metavar="NAME",
+        help=
+        "Output the result to an image palette. "
+        "A name for the file can be supplied."
+    )
+    parser.add_argument(
+        "-g",
+        "--gpl",
+        nargs="?",
+        default=None,
+        const=True,
+        metavar="NAME",
+        help=
+        "Output the result to a GIMP color palette (GPL). "
+        "A name for the palette can be supplied."
+    )
     args = parser.parse_args()
 
-    path = args.image[0]
-    filename = os.path.splitext(os.path.basename(path))[0]
+    path = args.path[0]
+    original_filename = os.path.splitext(os.path.basename(path))[0]
     colors, total = extract_from_path(path, args.tolerance, args.limit)
+    timestamp = time.strftime("%Y-%m-%d %H%M%S", time.localtime())
 
-    if args.output in ["all", "text"]:
+    if not args.silence:
         print_result(colors, total)
-    if args.output in ["all", "image"]:
+    if args.image:
+        filename = construct_filename(original_filename, args.image, timestamp, ".png")
         image_result(colors, 150, filename)
+    if args.gpl:
+        palette = args.gpl if isinstance(args.gpl, str) else original_filename
+        filename = construct_filename(original_filename, args.gpl, timestamp, ".gpl")
+        gimp_color_palette_result(colors, filename, palette)
