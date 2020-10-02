@@ -118,14 +118,12 @@ palette based on their occurrence rate.
 
 If a name is provided that will be used for both the palette within the
 file as well as the filename. If a name isn't provided the palette will
-use the name of the original image and the file will be the original
-along with an appended time stamp.
+use the name of the original image and the file will use the original
+name along with an appended time stamp.
 
 ::
 
     $ extcolors gameboy.png --gpl "GameBoy Palette"
-
-.. image:: http://cairns.se/extcolors/gameboy-result-default.png
 
 ------------------
 Additional Options

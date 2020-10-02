@@ -42,7 +42,7 @@ After the change a name can be supplied after the flag: ::
 +++++++++++
 Text output
 +++++++++++
-The standard text output will be provided no mather if both, either, or
+The standard text output will be provided no matter if both, either, or
 none of the other output options are used. Along with that change there
 is now a flag that will silence the standard output.
 
