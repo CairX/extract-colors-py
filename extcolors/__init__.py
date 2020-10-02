@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw
 from extcolors import conversion
 from extcolors import difference
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 DEFAULT_TOLERANCE = 32
 

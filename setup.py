@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
 	name="extcolors",
-	version="0.2.1",
+	version="0.3.0",
 	description="Extract colors from an image. "
 				"Colors are grouped based on visual similarities using the CIE76 formula.",
 	long_description=open("README.rst").read(),
