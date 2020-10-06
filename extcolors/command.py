@@ -1,5 +1,3 @@
-# coding: utf8
-
 import argparse
 import math
 import os
@@ -16,10 +14,10 @@ def print_result(colors, pixel_count):
     for color in colors:
         rgb = str(color[0])
         count = color[1]
-        percentage = "{0:.2f}".format((float(count) / float(color_count)) * 100.0)
-        print("{0:15}:{1:>7}% ({2})".format(rgb, percentage, count))
+        percentage = "{:.2f}".format((float(count) / float(color_count)) * 100.0)
+        print(f"{rgb:15}:{percentage:>7}% ({count})")
 
-    print("\nPixels in output: {} of {}".format(color_count, pixel_count))
+    print(f"\nPixels in output: {color_count} of {pixel_count}")
 
 
 def image_result(colors, size, filename):
@@ -40,17 +38,17 @@ def image_result(colors, size, filename):
 
 def gimp_color_palette_result(colors, filename, palette):
     with open(filename, "w", encoding="utf-8") as file:
-        file.write("GIMP Palette\nName: {0}\n".format(palette))
+        file.write(f"GIMP Palette\nName: {palette}\n")
         for color in colors:
             rgb = color[0]
-            file.write("{0}\t{1}\t{2}\n".format(rgb[0], rgb[1], rgb[2]))
+            file.write("{}\t{}\t{}\n".format(rgb[0], rgb[1], rgb[2]))
 
 
 def parse_tolerance(value):
     value = float(value)
     if value < 0 or value > 100:
         raise argparse.ArgumentTypeError(
-            "{} isn't a integer between 0 and 100".format(value))
+            f"{value} isn't a integer between 0 and 100")
     return value
 
 
@@ -58,7 +56,7 @@ def parse_limit(value):
     value = int(value)
     if value < 0:
         raise argparse.ArgumentTypeError(
-            "{} isn't a positive integer".format(value))
+            f"{value} isn't a positive integer")
     return value
 
 
@@ -67,9 +65,9 @@ def construct_filename(original, custom, timestamp, extension):
     if isinstance(custom, str):
         filename = custom
         if not filename.endswith(extension):
-            filename = "{0}{1}".format(filename, extension)
+            filename = f"{filename}{extension}"
     else:
-        filename = "{0} {1}{2}".format(original, timestamp, extension)
+        filename = f"{original} {timestamp}{extension}"
     return filename
 
 
@@ -81,7 +79,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s {}".format(__version__)
+        version=f"%(prog)s {__version__}"
     )
     parser.add_argument("path", nargs=1, metavar="PATH")
     parser.add_argument(
@@ -96,7 +94,7 @@ def main():
         "Group colors to limit the output and give a better visual representation. "
         "Based on a scale from 0 to 100. Where 0 won't group any color and 100 will group all colors into one. "
         "Tolerance 0 will bypass all conversion. "
-        "Defaults to {0}.".format(DEFAULT_TOLERANCE))
+        "Defaults to {}.".format(DEFAULT_TOLERANCE))
     parser.add_argument(
         "-l",
         "--limit",

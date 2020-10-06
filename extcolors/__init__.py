@@ -1,5 +1,3 @@
-# coding: utf8
-
 import collections
 
 from PIL import Image, ImageDraw
