@@ -31,7 +31,10 @@ setup(
 	python_requires=">=3.6",
 	keywords="extract colors image",
 	packages=["extcolors"],
-	install_requires=["Pillow >=7.0.0"],
+	install_requires=[
+		"Pillow >=7.0.0",
+		"convcolors >=1.0.0",
+	],
 	extras_require={
 		"dev": [
 			"pytest ==5.4.3",

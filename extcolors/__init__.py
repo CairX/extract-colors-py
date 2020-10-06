@@ -1,8 +1,8 @@
 import collections
 
+from convcolors import rgb_to_lab
 from PIL import Image, ImageDraw
 
-from extcolors import conversion
 from extcolors import difference
 
 __version__ = "0.3.0"
@@ -63,7 +63,7 @@ def _count_colors(pixels):
 
     colors = []
     for rgb, count in counter.items():
-        lab = conversion.rgb_lab(rgb)
+        lab = rgb_to_lab(rgb)
         colors.append(Color(rgb=rgb, lab=lab, count=count))
 
     return colors
