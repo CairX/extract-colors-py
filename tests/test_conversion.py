@@ -1,5 +1,3 @@
-# coding: utf8
-
 from extcolors import conversion
 
 COLOR_SETS = (
