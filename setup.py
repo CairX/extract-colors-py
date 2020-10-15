@@ -33,7 +33,7 @@ setup(
 	keywords="extract colors image",
 	packages=["extcolors"],
 	install_requires=[
-		"Pillow >=7.0.0",
+		"Pillow >=8.0.0",
 		"convcolors >=1.0.0",
 	],
 	extras_require={
