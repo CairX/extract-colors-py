@@ -1,0 +1,45 @@
+1.0.0
+=====
+The major bump in version should have been done a long time ago but
+with no ability to correct the past we are taking the opportunity to do
+so now.
+
+We are aiming for a version scheme that is very common for
+Python packages. The three numbers represent in order:
+
+- Major - version when incompatible API changes are made.
+- Minor - version when functionality is added in a backwards-compatible manner.
+- Maintenance - version when backwards-compatible bug fixes are made.
+
+
+Add support for Python 3.9
+--------------------------
+Support has been added for Python 3.9 now that the `official version
+has been release <https://www.python.org/dev/peps/pep-0596/>`_.
+
+
+Drop support for Python 3.5
+---------------------------
+At the same time Python 3.5 has
+`reached its end-of-life <https://www.python.org/dev/peps/pep-0478/>`_
+and so it will no longer be supported.
+
+
+Pillow version 8.0.0
+--------------------
+In conjunction with the Python release cycle Pillow has also
+`added support for 3.9 and dropped support of 3.5 <https://pillow.readthedocs.io/en/stable/releasenotes/8.0.0.html>`_.
+To align the supported versions the minimum required Pillow version
+will be 8.0.0.
+
+Convcolors version 1.0.0
+------------------------
+The code that dealt with color conversion has been separated into its
+own packaged called `convcolors <https://pypi.org/project/convcolors/>`_.
+The intention is to make a clearer distinction what the goal of
+extcolors is, the extraction of colors from images, and what it needs
+to perform that action.
+
+In the long run the intention is also to extend convcolors from being
+only a library to also support command line operation (similar to what
+extcolors does today) for quick conversion between color spaces.
